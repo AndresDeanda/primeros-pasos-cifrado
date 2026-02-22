@@ -35,40 +35,77 @@
         <div id="resultado"></div>
     </div>
 
-    <script>
-        function procesar() {
-            // v_1: Conjunto de caracteres
-            let alphabet = document.getElementById('v_1').value;
-            if (!alphabet) {
-                alphabet = "";
-                for (let i = 32; i < 127; i++) alphabet += String.fromCharCode(i);
-            }
+<script>
+function procesar() {
 
-            const texto = document.getElementById('texto_u').value;
-            const mod = document.getElementById('modulo').value;
-            let res = "";
+    // [1] Obtiene el conjunto de caracteres definido por el usuario
+    let alphabet = document.getElementById('v_1').value;
 
-            if (mod === "cesar") {
-                const shift = parseInt(document.getElementById('x_k').value);
-                for (let char of texto) {
-                    let idx = alphabet.indexOf(char);
-                    if (idx !== -1) {
-                        let newIdx = (idx + shift) % alphabet.length;
-                        if (newIdx < 0) newIdx += alphabet.length;
-                        res += alphabet[newIdx];
-                    } else res += char;
-                }
-            } else {
-                // Lógica Atbash
-                for (let char of texto) {
-                    let idx = alphabet.indexOf(char);
-                    if (idx !== -1) {
-                        res += alphabet[(alphabet.length - 1) - idx];
-                    } else res += char;
-                }
-            }
-            document.getElementById('resultado').innerText = res;
+    // [2] Si el usuario no define conjunto, se genera ASCII estándar
+    if (!alphabet) {
+        alphabet = "";
+        for (let i = 32; i < 127; i++) { // [3]
+            alphabet += String.fromCharCode(i); // [4]
         }
-    </script>
+    }
+
+    // [5] Obtiene el texto ingresado
+    const texto = document.getElementById('texto_u').value;
+
+    // [6] Obtiene el módulo seleccionado
+    const mod = document.getElementById('modulo').value;
+
+    // [7] Variable para almacenar el resultado
+    let res = "";
+
+    if (mod === "cesar") {
+
+        // [8] Obtiene el desplazamiento para César
+        const shift = parseInt(document.getElementById('x_k').value);
+
+        // [9] Recorre cada carácter del texto
+        for (let char of texto) {
+
+            // [10] Busca la posición del carácter en el alfabeto
+            let idx = alphabet.indexOf(char);
+
+            if (idx !== -1) {
+
+                // [11] Calcula la nueva posición aplicando desplazamiento
+                let newIdx = (idx + shift) % alphabet.length;
+
+                if (newIdx < 0) newIdx += alphabet.length; // [12]
+
+                // [13] Agrega el nuevo carácter cifrado
+                res += alphabet[newIdx];
+
+            } else {
+                // [14] Mantiene caracteres no definidos
+                res += char;
+            }
+        }
+
+    } else {
+
+        // [15] Lógica del cifrado Atbash
+        for (let char of texto) {
+
+            let idx = alphabet.indexOf(char); // [16]
+
+            if (idx !== -1) {
+
+                // [17] Invierte la posición del carácter
+                res += alphabet[(alphabet.length - 1) - idx];
+
+            } else {
+                res += char; // [18]
+            }
+        }
+    }
+
+    // [19] Muestra el resultado en pantalla
+    document.getElementById('resultado').innerText = res;
+}
+</script>
 </body>
 </html>
