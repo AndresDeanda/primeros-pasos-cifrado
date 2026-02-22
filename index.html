@@ -6,15 +6,16 @@
     <style>
         body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
         .container { background: white; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        input, select, button { width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        button { background: #28a745; color: white; border: none; cursor: pointer; }
-        #resultado { background: #e9ecef; padding: 10px; word-break: break-all; min-height: 40px; }
+        input, select, button { width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #218838; }
+        #resultado { background: #e9ecef; padding: 10px; word-break: break-all; min-height: 40px; border-radius: 4px; font-family: monospace; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Cifrado César / Atbash</h2>
-        <label>Conjunto de caracteres (dejar vacío para ASCII):</label>
+        <label>Conjunto de caracteres (Vacío para ASCII):</label>
         <input type="text" id="v_1" placeholder="Ej: abcde...">
         
         <label>Módulo:</label>
@@ -37,45 +38,45 @@
 
 <script>
 function procesar() {
-
-    let alphabet = document.getElementById('v_1').value;      // [1]
-    if (!alphabet) {                                          // [2]
+    let alphabet = document.getElementById('v_1').value;           // [1]
+    
+    if (!alphabet) {                                               // [2]
         alphabet = "";
-        for (let i = 32; i < 127; i++) {                      // [3]
-            alphabet += String.fromCharCode(i);               // [4]
+        for (let i = 32; i < 127; i++) {                           // [3]
+            alphabet += String.fromCharCode(i);                    // [4]
         }
     }
 
-    const texto = document.getElementById('texto_u').value;   // [5]
-    const mod = document.getElementById('modulo').value;      // [6]
-    let res = "";                                             // [7]
+    const texto = document.getElementById('texto_u').value;        // [5]
+    const mod = document.getElementById('modulo').value;           // [6]
+    let res = "";                                                  // [7]
 
-    if (mod === "cesar") {                                    // [8]
+    if (mod === "cesar") {                                         // [8]
         const shift = parseInt(document.getElementById('x_k').value); // [9]
 
-        for (let char of texto) {                             // [10]
-            let idx = alphabet.indexOf(char);                 // [11]
+        for (let char of texto) {                                  // [10]
+            let idx = alphabet.indexOf(char);                      // [11]
 
             if (idx !== -1) {
-                let newIdx = (idx + shift) % alphabet.length; // [12]
-                if (newIdx < 0) newIdx += alphabet.length;    // [13]
-                res += alphabet[newIdx];                      // [14]
+                let newIdx = (idx + shift) % alphabet.length;      // [12]
+                if (newIdx < 0) newIdx += alphabet.length;         // [13]
+                res += alphabet[newIdx];                           // [14]
             } else {
-                res += char;                                  // [15]
+                res += char;                                       // [15]
             }
         }
-    } else {                                                   // [16]
+    } else {                                                       // [16]
         for (let char of texto) {
-            let idx = alphabet.indexOf(char);                 // [17]
+            let idx = alphabet.indexOf(char);                      // [17]
             if (idx !== -1) {
-                res += alphabet[(alphabet.length - 1) - idx];// [18]
+                res += alphabet[(alphabet.length - 1) - idx];      // [18]
             } else {
-                res += char;                                  // [19]
+                res += char;                                       // [19]
             }
         }
     }
 
-    document.getElementById('resultado').innerText = res;     // [20]
+    document.getElementById('resultado').innerText = res;          // [20]
 }
 </script>
 </body>
