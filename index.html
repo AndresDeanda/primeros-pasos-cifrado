@@ -38,73 +38,44 @@
 <script>
 function procesar() {
 
-    // [1] Obtiene el conjunto de caracteres definido por el usuario
-    let alphabet = document.getElementById('v_1').value;
-
-    // [2] Si el usuario no define conjunto, se genera ASCII estándar
-    if (!alphabet) {
+    let alphabet = document.getElementById('v_1').value;      // [1]
+    if (!alphabet) {                                          // [2]
         alphabet = "";
-        for (let i = 32; i < 127; i++) { // [3]
-            alphabet += String.fromCharCode(i); // [4]
+        for (let i = 32; i < 127; i++) {                      // [3]
+            alphabet += String.fromCharCode(i);               // [4]
         }
     }
 
-    // [5] Obtiene el texto ingresado
-    const texto = document.getElementById('texto_u').value;
+    const texto = document.getElementById('texto_u').value;   // [5]
+    const mod = document.getElementById('modulo').value;      // [6]
+    let res = "";                                             // [7]
 
-    // [6] Obtiene el módulo seleccionado
-    const mod = document.getElementById('modulo').value;
+    if (mod === "cesar") {                                    // [8]
+        const shift = parseInt(document.getElementById('x_k').value); // [9]
 
-    // [7] Variable para almacenar el resultado
-    let res = "";
-
-    if (mod === "cesar") {
-
-        // [8] Obtiene el desplazamiento para César
-        const shift = parseInt(document.getElementById('x_k').value);
-
-        // [9] Recorre cada carácter del texto
-        for (let char of texto) {
-
-            // [10] Busca la posición del carácter en el alfabeto
-            let idx = alphabet.indexOf(char);
+        for (let char of texto) {                             // [10]
+            let idx = alphabet.indexOf(char);                 // [11]
 
             if (idx !== -1) {
-
-                // [11] Calcula la nueva posición aplicando desplazamiento
-                let newIdx = (idx + shift) % alphabet.length;
-
-                if (newIdx < 0) newIdx += alphabet.length; // [12]
-
-                // [13] Agrega el nuevo carácter cifrado
-                res += alphabet[newIdx];
-
+                let newIdx = (idx + shift) % alphabet.length; // [12]
+                if (newIdx < 0) newIdx += alphabet.length;    // [13]
+                res += alphabet[newIdx];                      // [14]
             } else {
-                // [14] Mantiene caracteres no definidos
-                res += char;
+                res += char;                                  // [15]
             }
         }
-
-    } else {
-
-        // [15] Lógica del cifrado Atbash
+    } else {                                                   // [16]
         for (let char of texto) {
-
-            let idx = alphabet.indexOf(char); // [16]
-
+            let idx = alphabet.indexOf(char);                 // [17]
             if (idx !== -1) {
-
-                // [17] Invierte la posición del carácter
-                res += alphabet[(alphabet.length - 1) - idx];
-
+                res += alphabet[(alphabet.length - 1) - idx];// [18]
             } else {
-                res += char; // [18]
+                res += char;                                  // [19]
             }
         }
     }
 
-    // [19] Muestra el resultado en pantalla
-    document.getElementById('resultado').innerText = res;
+    document.getElementById('resultado').innerText = res;     // [20]
 }
 </script>
 </body>
