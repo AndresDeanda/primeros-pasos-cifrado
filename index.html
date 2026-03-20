@@ -21,6 +21,7 @@
 
         <label>Módulo:</label>
         <select id="modulo">
+            <option value="auto">Automático</option>
             <option value="cesar">César</option>
             <option value="atbash">Atbash</option>
         </select>
@@ -32,7 +33,6 @@
         <input type="number" id="x_k" value="3">
 
         <button onclick="procesar()">Procesar</button>
-        <button onclick="autoDescifrar()">Descifrar automático</button>
 
         <h4>Resultado:</h4>
         <div id="resultado"></div>
@@ -67,7 +67,8 @@ function procesar() {
                 res += char;                                       // [15]
             }
         }
-    } else {                                                       // [16]
+
+    } else if (mod === "atbash") {                                 // [16]
         for (let char of texto) {
             let idx = alphabet.indexOf(char);                      // [17]
             if (idx !== -1) {
@@ -76,56 +77,69 @@ function procesar() {
                 res += char;                                       // [19]
             }
         }
+
+    } else {                                                       // [21] AUTO 🔥
+        let mejorTexto = "";
+        let mejorScore = -1;
+
+        // 🔹 probar todos los shifts
+        for (let shift = 1; shift < alphabet.length; shift++) {    // [22]
+            let temp = "";
+
+            for (let char of texto) {
+                let idx = alphabet.indexOf(char);
+
+                if (idx !== -1) {
+                    let newIdx = (idx - shift) % alphabet.length;
+                    if (newIdx < 0) newIdx += alphabet.length;
+                    temp += alphabet[newIdx];
+                } else {
+                    temp += char;
+                }
+            }
+
+            let score = evaluarTexto(temp);                        // [23]
+
+            if (score > mejorScore) {
+                mejorScore = score;
+                mejorTexto = temp;
+            }
+        }
+
+        // 🔹 probar Atbash
+        let atbash = "";
+        for (let char of texto) {
+            let idx = alphabet.indexOf(char);
+            if (idx !== -1) {
+                atbash += alphabet[(alphabet.length - 1) - idx];
+            } else {
+                atbash += char;
+            }
+        }
+
+        let scoreAtbash = evaluarTexto(atbash);
+
+        if (scoreAtbash > mejorScore) {
+            mejorTexto = atbash;
+        }
+
+        res = mejorTexto;                                          // [24]
     }
 
     document.getElementById('resultado').innerText = res;          // [20]
 }
 
 
-// 🔥 FUNCIÓN CLAVE PARA EL PROFE
-function autoDescifrar() {
-    let alphabet = "";
+// 🔥 Evalúa si el texto parece español
+function evaluarTexto(txt) {                                      // [25]
+    let comunes = "aeiouAEIOU ";
+    let score = 0;
 
-    for (let i = 32; i < 127; i++) {
-        alphabet += String.fromCharCode(i);
+    for (let c of txt) {
+        if (comunes.includes(c)) score++;
     }
 
-    const texto = document.getElementById('texto_u').value;
-    let resultados = "";
-
-    // 🔹 Probar TODOS los desplazamientos César
-    for (let shift = 1; shift < alphabet.length; shift++) {
-        let res = "";
-
-        for (let char of texto) {
-            let idx = alphabet.indexOf(char);
-
-            if (idx !== -1) {
-                let newIdx = (idx - shift) % alphabet.length;
-                if (newIdx < 0) newIdx += alphabet.length;
-                res += alphabet[newIdx];
-            } else {
-                res += char;
-            }
-        }
-
-        resultados += "Shift " + shift + ": " + res + "\n\n";
-    }
-
-    // 🔹 Probar Atbash
-    let atbash = "";
-    for (let char of texto) {
-        let idx = alphabet.indexOf(char);
-        if (idx !== -1) {
-            atbash += alphabet[(alphabet.length - 1) - idx];
-        } else {
-            atbash += char;
-        }
-    }
-
-    resultados += "Atbash:\n" + atbash;
-
-    document.getElementById('resultado').innerText = resultados;
+    return score;
 }
 </script>
 </body>
