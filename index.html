@@ -78,12 +78,12 @@ function procesar() {
             }
         }
 
-    } else {                                                       // [21] AUTO 🔥
+    } else {                                                       // [21] 
         let mejorTexto = "";
         let mejorScore = -1;
 
-        // 🔹 probar todos los shifts
-        for (let shift = 1; shift < alphabet.length; shift++) {    // [22]
+       
+        for (let shift = 1; shift < alphabet.length; shift++) {    // [22] 
             let temp = "";
 
             for (let char of texto) {
@@ -98,7 +98,7 @@ function procesar() {
                 }
             }
 
-            let score = evaluarTexto(temp);                        // [23]
+            let score = evaluarTexto(temp);                        // [23] 
 
             if (score > mejorScore) {
                 mejorScore = score;
@@ -130,7 +130,7 @@ function procesar() {
 }
 
 
-// 🔥 Evalúa si el texto parece español
+// Evalúa si el texto parece español
 function evaluarTexto(txt) {                                      // [25]
     let comunes = "aeiouAEIOU ";
     let score = 0;
